@@ -1,4 +1,3 @@
-
 import { Theme } from '../types/theme';
 
 export const defaultTheme: Theme = {
@@ -42,9 +41,9 @@ export const defaultTheme: Theme = {
   
   typography: {
     fontFamily: {
-      title: "'Syne', 'Plus Jakarta Sans', sans-serif",
-      body: "'Plus Jakarta Sans', sans-serif",
-      mono: "'Fira Code', monospace"
+      title: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      body: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      mono: "'JetBrains Mono', 'Fira Code', monospace"
     },
     fontSize: {
       xs: '0.75rem',
@@ -55,7 +54,7 @@ export const defaultTheme: Theme = {
       '2xl': '1.5rem',
       '3xl': '1.875rem',
       '4xl': '2.25rem',
-      display: 'clamp(2.25rem, 5vw + 1rem, 5.5rem)'
+      display: 'clamp(2.5rem, 6vw, 4.5rem)'
     },
     fontWeight: {
       normal: 400,
@@ -65,9 +64,9 @@ export const defaultTheme: Theme = {
       extrabold: 800
     },
     lineHeight: {
-      tight: 1.15,
-      normal: 1.6,
-      relaxed: 1.8
+      tight: 1.2,
+      normal: 1.5,
+      relaxed: 1.75
     }
   },
   

@@ -384,7 +384,8 @@ export const AddChannelPage: React.FC = () => {
                 ))}
               </div>
 
-              {iconMethod === 'library' ? (
+              {/* Fix: Added explicit string cast to iconMethod to prevent TypeScript narrowing error in comparison with 'library' */}
+              {(iconMethod as string) === 'library' ? (
                 <div className="h-[420px] -mx-2">
                   <IconPicker 
                     size="sm"
@@ -418,7 +419,7 @@ export const AddChannelPage: React.FC = () => {
                         onClick={() => iconInputRef.current?.click()}
                         className="border-2 border-dashed border-white/10 rounded-3xl p-8 flex flex-col items-center justify-center hover:border-accent-secondary/50 hover:bg-accent-secondary/5 transition-all cursor-pointer group animate-in fade-in slide-in-from-right-2"
                       >
-                        <input ref={iconInputRef} type="file" className="hidden" accept="image/*" onChange={handleIconUpload} />
+                        <input ref={iconInputRef} type="file" className="hidden" accept="image/*" onChange={handleThumbUpload} />
                         <Upload className="text-text-tertiary group-hover:text-accent-secondary mb-3" size={32} />
                         <p className="text-xs font-bold">Subir PNG 512x512</p>
                       </div>

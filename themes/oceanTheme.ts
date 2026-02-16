@@ -1,4 +1,3 @@
-
 import { Theme } from '../types/theme';
 
 export const oceanTheme: Theme = {
@@ -42,9 +41,9 @@ export const oceanTheme: Theme = {
   
   typography: {
     fontFamily: {
-      title: "'Syne', sans-serif",
-      body: "'Plus Jakarta Sans', sans-serif",
-      mono: "'Fira Code', monospace"
+      title: "'Inter', sans-serif",
+      body: "'Inter', sans-serif",
+      mono: "'JetBrains Mono', monospace"
     },
     fontSize: {
       xs: '0.75rem',
@@ -55,7 +54,7 @@ export const oceanTheme: Theme = {
       '2xl': '1.5rem',
       '3xl': '1.875rem',
       '4xl': '2.25rem',
-      display: 'clamp(2rem, 5vw, 3.5rem)'
+      display: 'clamp(2.5rem, 6vw, 4.5rem)'
     },
     fontWeight: {
       normal: 400,

@@ -1,4 +1,3 @@
-
 import { Theme } from '../types/theme';
 
 export const neonTheme: Theme = {
@@ -42,9 +41,9 @@ export const neonTheme: Theme = {
   
   typography: {
     fontFamily: {
-      title: "'Syne', sans-serif",
-      body: "'Plus Jakarta Sans', sans-serif",
-      mono: "'Fira Code', monospace"
+      title: "'Inter', sans-serif",
+      body: "'Inter', sans-serif",
+      mono: "'JetBrains Mono', monospace"
     },
     fontSize: {
       xs: '0.75rem',
@@ -55,11 +54,11 @@ export const neonTheme: Theme = {
       '2xl': '1.5rem',
       '3xl': '2rem',
       '4xl': '2.5rem',
-      display: 'clamp(2.5rem, 6vw, 4rem)'
+      display: 'clamp(2.5rem, 6vw, 4.5rem)'
     },
     fontWeight: {
-      normal: 300,
-      medium: 400,
+      normal: 400,
+      medium: 500,
       semibold: 600,
       bold: 700,
       extrabold: 900
