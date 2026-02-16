@@ -1,20 +1,20 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import {
-  User,
-  signInWithPopup,
-  signOut as firebaseSignOut,
-  onAuthStateChanged,
-  GoogleAuthProvider
-} from 'firebase/auth';
-import { auth, googleProvider } from '../config/firebase';
+import { GoogleOAuthProvider, useGoogleLogin } from '@react-oauth/google';
+
+interface UserProfile {
+  email: string;
+  displayName: string;
+  photoURL: string;
+  uid: string;
+}
 
 interface AuthContextType {
-  user: User | null;
+  user: UserProfile | null;
   loading: boolean;
   isAuthenticated: boolean;
-  signInWithGoogle: () => Promise<void>;
-  signOut: () => Promise<void>;
+  signInWithGoogle: () => void;
+  signOut: () => void;
   error: string | null;
 }
 
@@ -23,97 +23,108 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error('useAuth must be used within AuthProvider');
   }
   return context;
 };
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+const CLIENT_ID = "287722530264-aoh6sge31ooh5r6n8d0ihuhvppk4eofk.apps.googleusercontent.com";
+
+/**
+ * Componente interno que contém a lógica de login.
+ * Deve obrigatoriamente ser filho de GoogleOAuthProvider.
+ */
+const AuthLogicProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Monitorar estado de autenticação
+  // Carregar usuário do localStorage ao iniciar
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setUser(user);
-      setLoading(false);
-      
-      // Salvar dados básicos do usuário no localStorage para persistência rápida
-      if (user) {
-        localStorage.setItem('streamtv_user', JSON.stringify({
-          uid: user.uid,
-          email: user.email,
-          displayName: user.displayName,
-          photoURL: user.photoURL
-        }));
-      } else {
+    const savedUser = localStorage.getItem('streamtv_user');
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser));
+      } catch (err) {
         localStorage.removeItem('streamtv_user');
       }
-    });
-
-    return () => unsubscribe();
+    }
+    setLoading(false);
   }, []);
 
-  // Login com Google
-  const signInWithGoogle = async () => {
-    try {
-      setError(null);
-      setLoading(true);
-      
-      const result = await signInWithPopup(auth, googleProvider);
-      console.log('Login bem-sucedido:', result.user);
-      
-    } catch (err: any) {
-      console.error('Erro no login:', err);
-      
-      let errorMessage = 'Erro ao fazer login';
-      
-      switch (err.code) {
-        case 'auth/popup-closed-by-user':
-          errorMessage = 'Login cancelado pelo usuário';
-          break;
-        case 'auth/popup-blocked':
-          errorMessage = 'Popup bloqueado. Permita popups para este site.';
-          break;
-        case 'auth/network-request-failed':
-          errorMessage = 'Erro de conexão. Verifique sua internet.';
-          break;
-        case 'auth/too-many-requests':
-          errorMessage = 'Muitas tentativas. Aguarde um momento.';
-          break;
-        default:
-          errorMessage = err.message || 'Erro desconhecido ao fazer login';
+  const login = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        setLoading(true);
+        setError(null);
+        
+        // Buscar informações do usuário usando o access token
+        const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+          headers: {
+            Authorization: `Bearer ${tokenResponse.access_token}`
+          }
+        });
+        
+        if (!res.ok) throw new Error('Falha ao obter perfil do Google');
+        
+        const info = await res.json();
+        
+        const userData: UserProfile = {
+          email: info.email,
+          displayName: info.name,
+          photoURL: info.picture,
+          uid: info.sub // ID único do Google
+        };
+        
+        setUser(userData);
+        localStorage.setItem('streamtv_user', JSON.stringify(userData));
+        localStorage.setItem('streamtv_token', tokenResponse.access_token);
+        
+        console.log('✅ Login bem-sucedido:', userData.displayName);
+      } catch (err: any) {
+        setError(err.message || 'Erro ao processar login');
+      } finally {
+        setLoading(false);
       }
-      
-      setError(errorMessage);
-      throw new Error(errorMessage);
-    } finally {
+    },
+    onError: () => {
+      setError('O login do Google falhou ou foi cancelado');
       setLoading(false);
     }
-  };
+  });
 
-  // Logout
-  const signOut = async () => {
-    try {
-      setError(null);
-      await firebaseSignOut(auth);
-      console.log('Logout bem-sucedido');
-    } catch (err: any) {
-      console.error('Erro no logout:', err);
-      setError('Erro ao fazer logout');
-      throw err;
-    }
+  const signOut = () => {
+    setUser(null);
+    localStorage.removeItem('streamtv_user');
+    localStorage.removeItem('streamtv_token');
+    console.log('✅ Logout realizado');
   };
 
   const value: AuthContextType = {
     user,
     loading,
     isAuthenticated: !!user,
-    signInWithGoogle,
+    signInWithGoogle: login,
     signOut,
     error
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+/**
+ * Provedor principal que envolve o app com o contexto do Google OAuth.
+ */
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <GoogleOAuthProvider clientId={CLIENT_ID}>
+      <AuthLogicProvider>
+        {children}
+      </AuthLogicProvider>
+    </GoogleOAuthProvider>
+  );
 };

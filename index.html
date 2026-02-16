@@ -67,7 +67,6 @@
     </script>
     <style>
       :root {
-        /* Defaults para prevenção de flash branco antes do ThemeManager carregar */
         --bg-primary: #080b0e;
         --bg-secondary: #0f1318;
         --bg-card: #141a20;
@@ -95,14 +94,12 @@
         user-select: none;
         -webkit-tap-highlight-color: transparent;
         font-family: var(--font-body), sans-serif;
-        font-size: var(--text-body);
         line-height: clamp(1.4, 1.6, 1.8);
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
         transition: background-color 0.3s ease, color 0.3s ease;
       }
 
-      /* Efeitos Especiais de Temas */
       .glassmorphism {
         --glass-bg: rgba(255, 255, 255, 0.03);
       }
@@ -122,7 +119,6 @@
         scroll-behavior: smooth;
       }
 
-      /* Scanlines sutil para temas escuros */
       body::before {
         content: "";
         position: fixed;
@@ -144,7 +140,6 @@
         max-width: 70ch;
       }
 
-      /* Modo TV Global */
       .tv-mode {
         cursor: none !important;
         scroll-behavior: smooth;
@@ -155,7 +150,6 @@
         cursor: none !important;
       }
 
-      /* Customização de Scrollbar para TV */
       .tv-mode ::-webkit-scrollbar {
         width: 6px;
         height: 6px;
@@ -168,7 +162,6 @@
         border-radius: 10px;
       }
 
-      /* Force Landscape em qualquer dispositivo quando em modo vertical */
       @media (orientation: portrait) {
         html.player-force-landscape .video-player-container {
           position: fixed;
@@ -247,7 +240,8 @@
     "framer-motion": "https://esm.sh/framer-motion@11.11.17?deps=react@19.0.0,react-dom@19.0.0",
     "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
     "react/": "https://esm.sh/react@^19.2.4/",
-    "firebase/": "https://esm.sh/firebase@^12.9.0/"
+    "firebase/": "https://esm.sh/firebase@^12.9.0/",
+    "@react-oauth/google": "https://esm.sh/@react-oauth/google@0.12.1?deps=react@19.0.0,react-dom@19.0.0"
   }
 }
 </script>

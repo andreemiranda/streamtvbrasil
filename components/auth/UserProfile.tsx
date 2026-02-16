@@ -10,13 +10,10 @@ export const UserProfile: React.FC = () => {
 
   if (!user) return null;
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-      window.location.hash = '#/'; // Redireciona para home (HashRouter)
-    } catch (error) {
-      console.error('Erro ao fazer logout:', error);
-    }
+  const handleSignOut = () => {
+    signOut();
+    setShowMenu(false);
+    window.location.hash = '#/'; // Redireciona para home (HashRouter)
   };
 
   return (

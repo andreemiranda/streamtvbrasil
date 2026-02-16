@@ -19,14 +19,6 @@ export const LoginPage: React.FC = () => {
     }
   }, [isAuthenticated, navigate, from]);
 
-  const handleGoogleLogin = async () => {
-    try {
-      await signInWithGoogle();
-    } catch (err) {
-      console.error('Login failed:', err);
-    }
-  };
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-bg-primary via-bg-secondary to-bg-primary px-4">
       <div className="max-w-md w-full animate-in fade-in zoom-in duration-500">
@@ -61,7 +53,7 @@ export const LoginPage: React.FC = () => {
 
             {/* Google Login Button */}
             <button
-              onClick={handleGoogleLogin}
+              onClick={() => signInWithGoogle()}
               disabled={loading}
               className="w-full bg-white hover:bg-gray-100 text-gray-900 font-black py-4 px-6 rounded-2xl transition-all duration-300 flex items-center justify-center gap-4 shadow-xl hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed group"
             >
@@ -118,7 +110,7 @@ export const LoginPage: React.FC = () => {
         </div>
         
         <p className="text-center text-[10px] text-text-tertiary mt-8 font-bold uppercase tracking-[0.2em]">
-          Powered by Google Firebase Auth
+          Powered by Google OAuth 2.0
         </p>
       </div>
     </div>
