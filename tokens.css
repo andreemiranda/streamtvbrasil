@@ -1,0 +1,50 @@
+
+:root {
+  /* Famílias */
+  --font-display:   'Syne', sans-serif;           /* logotipo, intro */
+  --font-ui:        'Plus Jakarta Sans', sans-serif; /* toda a UI */
+
+  /* === TIPOGRAFIA FLUIDA === */
+  --text-display:    clamp(2.25rem, 5vw + 1rem, 5.5rem);   /* 36px → 88px */
+  --text-h1:         clamp(1.5rem,  3vw + 0.5rem, 3.5rem);  /* 24px → 56px */
+  --text-h2:         clamp(1.125rem, 2vw + 0.3rem, 2.5rem); /* 18px → 40px */
+  --text-h3:         clamp(0.9rem,  1.4vw + 0.2rem, 1.75rem); /* 14.4px → 28px */
+  --text-body-lg:    clamp(0.875rem, 1.2vw + 0.2rem, 1.375rem); /* 14px → 22px */
+  --text-body:       clamp(0.8125rem, 1vw + 0.15rem, 1.125rem); /* 13px → 18px */
+  --text-body-sm:    clamp(0.6875rem, 0.8vw + 0.1rem, 0.9375rem); /* 11px → 15px */
+  --text-caption:    clamp(0.625rem,  0.6vw + 0.08rem, 0.8125rem); /* 10px → 13px */
+  --text-label:      clamp(0.75rem,   0.9vw + 0.12rem, 1.125rem);   /* 12px → 18px */
+  --text-channel:    clamp(0.75rem,   1.1vw + 0.15rem, 1.25rem); /* 12px → 20px */
+  --text-player:     clamp(1rem,      2.5vw + 0.3rem,  2.75rem); /* 16px → 44px */
+  --text-nav:        clamp(0.625rem,  0.7vw + 0.05rem, 0.875rem); /* 10px → 14px */
+
+  /* === ÍCONES ADAPTATIVOS === */
+  --icon-nav:       clamp(20px, 3vw, 36px);
+  --icon-card:      clamp(14px, 2vw, 24px);
+  --icon-action:    clamp(24px, 4vw, 64px);
+  --icon-play-center: clamp(48px, 8vw, 120px);
+  --icon-chip:      clamp(12px, 1.5vw, 20px);
+  --icon-status:    clamp(6px, 1vw, 12px);
+  --icon-player:    clamp(20px, 3.5vw, 52px);
+  --icon-favorite:  clamp(16px, 2.5vw, 32px);
+
+  /* === BOTÕES ADAPTATIVOS === */
+  --btn-primary-h:    clamp(40px, 6vw, 72px);
+  --btn-primary-px:   clamp(16px, 3vw, 40px);
+  --btn-secondary-h:  clamp(36px, 5vw, 60px);
+  --btn-small-h:      clamp(28px, 3.5vw, 44px);
+  --btn-small-px:     clamp(10px, 2vw, 24px);
+  --btn-nav-h:        clamp(48px, 7vw, 80px);
+  --btn-nav-w:        clamp(48px, 7vw, 80px);
+  --btn-icon-size:    clamp(36px, 5vw, 64px);
+  --btn-radius:       clamp(8px, 1.5vw, 16px);
+  --chip-radius:      clamp(20px, 3vw, 40px);
+
+  /* === IMAGENS E CARDS === */
+  --card-logo-size:   clamp(48px, 8vw, 120px);
+  --card-height:      clamp(100px, 16vw, 220px);
+  --featured-logo:    clamp(56px, 10vw, 160px);
+  --player-logo:      clamp(32px, 5vw, 96px);
+  --sidebar-logo:     clamp(36px, 5vw, 64px);
+  --sidebar-width:    clamp(220px, 16vw, 320px);
+}

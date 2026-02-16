@@ -1,0 +1,196 @@
+
+/* Container principal */
+.intro-container {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #080b0e;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Gradiente radial de profundidade */
+.intro-bg-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 80% 60% at 50% 40%,
+    rgba(0, 179, 126, 0.06) 0%,
+    rgba(19, 81, 180, 0.04) 40%,
+    transparent 70%
+  );
+  pointer-events: none;
+}
+
+/* Vinheta */
+.intro-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 100% 100% at 50% 50%,
+    transparent 55%,
+    rgba(0, 0, 0, 0.55) 100%
+  );
+  pointer-events: none;
+}
+
+/* Scanlines */
+.intro-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.025) 2px,
+    rgba(0, 0, 0, 0.025) 4px
+  );
+  pointer-events: none;
+}
+
+/* Partículas */
+.intro-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  animation: particle-float linear infinite;
+}
+
+@keyframes particle-float {
+  0%, 100% { opacity: 0.1; transform: translateY(0); }
+  50%       { opacity: 0.7; transform: translateY(-6px); }
+}
+
+/* Wrapper do televisor */
+.intro-tv-wrapper {
+  position: relative;
+  z-index: 1;
+  margin-bottom: clamp(20px, 4vw, 40px);
+}
+
+/* SVG do televisor */
+.tv-svg {
+  width: clamp(180px, 45vw, 380px);
+  height: auto;
+  overflow: visible; /* permite o drop-shadow extravasar */
+}
+
+/* Animação CSS do corpo da TV */
+.tv-body {
+  animation: tv-glow-pulse 0.8s ease-out 0.5s both;
+}
+
+@keyframes tv-glow-pulse {
+  0%   { filter: drop-shadow(0 0 0px rgba(0,179,126,0)); }
+  30%  { filter: drop-shadow(0 0 28px rgba(0,179,126,0.8)); }
+  100% { filter: drop-shadow(0 0 10px rgba(0,179,126,0.3)); }
+}
+
+/* Conteúdo da tela — efeito glitch de liga TV */
+.tv-screen-content {
+  animation: tv-glitch 0.4s ease-out 0.85s both;
+}
+
+@keyframes tv-glitch {
+  0%   { opacity: 0; transform: translateX(-3px); }
+  15%  { opacity: 0.6; transform: translateX(3px); }
+  30%  { opacity: 0.3; transform: translateX(-1px); }
+  50%  { opacity: 0.8; transform: translateX(0); }
+  70%  { opacity: 0.6; }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Estático (flash branco) */
+.tv-static {
+  animation: tv-static-flash 0.3s ease-out 0.82s both;
+}
+
+@keyframes tv-static-flash {
+  0%   { opacity: 0.4; }
+  50%  { opacity: 0.15; }
+  100% { opacity: 0; }
+}
+
+/* Texto do título (StreamTV) */
+.intro-title {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  font-size: clamp(2.25rem, 7vw, 5.5rem);
+  letter-spacing: -0.03em;
+  color: #e8edf2;
+  line-height: 1.0;
+  display: flex;
+  perspective: 400px;
+  position: relative;
+  z-index: 1;
+  margin-bottom: clamp(6px, 1vw, 12px);
+}
+
+/* Subtítulo (BRASIL) */
+.intro-subtitle {
+  font-family: 'Syne', sans-serif;
+  font-weight: 700;
+  font-size: clamp(0.9rem, 2.5vw, 2rem);
+  color: #00b37e;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 20px rgba(0, 179, 126, 0.5),
+    0 0 40px rgba(0, 179, 126, 0.2);
+  position: relative;
+  z-index: 1;
+  margin-bottom: clamp(8px, 1.5vw, 16px);
+}
+
+/* Tagline */
+.intro-tagline {
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 400;
+  font-size: clamp(0.6875rem, 1.2vw, 0.875rem);
+  color: #3d5065;
+  letter-spacing: 0.04em;
+  position: relative;
+  z-index: 1;
+  margin-bottom: clamp(20px, 4vw, 40px);
+}
+
+/* Barra de progresso */
+.intro-progress-bar {
+  width: clamp(140px, 35vw, 280px);
+  height: 2px;
+  background: linear-gradient(90deg, #009c3b, #00b37e, #f0a500);
+  border-radius: 2px;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 0 12px rgba(0, 179, 126, 0.5);
+}
+
+/* Dot AO VIVO */
+.live-dot {
+  animation: live-pulse 1s ease-in-out infinite;
+}
+
+@keyframes live-pulse {
+  0%, 100% { opacity: 1; r: 4; }
+  50%       { opacity: 0.4; r: 3.5; }
+}
+
+/* Acessibilidade: respeitar reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  .particle,
+  .tv-body,
+  .tv-screen-content,
+  .tv-static,
+  .live-dot {
+    animation: none !important;
+  }
+}

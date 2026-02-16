@@ -1,0 +1,25 @@
+{
+  "name": "StreamTV Brasil",
+  "short_name": "StreamTV",
+  "description": "Premium IPTV player optimized for Brazilian channels with forced landscape mode on mobile.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#080b0e",
+  "theme_color": "#00b37e",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

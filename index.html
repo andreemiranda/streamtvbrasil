@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>StreamTV Brasil — IPTV Player</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="StreamTV" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="theme-color" content="#080b0e" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="components/intro/intro.css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['var(--font-body)', 'Plus Jakarta Sans', 'sans-serif'],
+              title: ['var(--font-title)', 'Syne', 'sans-serif'],
+              mono: ['var(--font-mono)', 'monospace'],
+            },
+            colors: {
+              'bg-primary': 'var(--bg-primary)',
+              'bg-secondary': 'var(--bg-secondary)',
+              'bg-card': 'var(--bg-card)',
+              'accent-primary': 'var(--accent-primary)',
+              'accent-secondary': 'var(--accent-secondary)',
+              'accent-blue': 'var(--accent-blue)',
+              'accent-live': 'var(--accent-live)',
+              'text-primary': 'var(--text-primary)',
+              'text-secondary': 'var(--text-secondary)',
+              'text-tertiary': 'var(--text-tertiary)',
+            },
+            animation: {
+              'live-pulse': 'live-pulse 1.5s ease-in-out infinite',
+              'shimmer': 'shimmer 2s infinite',
+            },
+            borderRadius: {
+              'xl': 'var(--radius-xl)',
+              '2xl': 'var(--radius-2xl)',
+              '3xl': 'var(--radius-3xl)',
+            },
+            keyframes: {
+              'live-pulse': {
+                '0%, 100%': { opacity: '1', transform: 'scale(1)' },
+                '50%': { opacity: '0.4', transform: 'scale(0.8)' },
+              },
+              'shimmer': {
+                '0%': { transform: 'translateX(-100%)' },
+                '100%': { transform: 'translateX(100%)' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      :root {
+        /* Defaults para prevenção de flash branco antes do ThemeManager carregar */
+        --bg-primary: #080b0e;
+        --bg-secondary: #0f1318;
+        --bg-card: #141a20;
+        --accent-primary: #00b37e;
+        --text-primary: #e8edf2;
+        --text-secondary: #8a9ab0;
+        --font-title: 'Syne';
+        --font-body: 'Plus Jakarta Sans';
+        --radius-xl: 1rem;
+        --radius-2xl: 1.5rem;
+        --radius-3xl: 2rem;
+        --blur: 10px;
+      }
+      
+      html {
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+
+      body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        margin: 0;
+        overflow-x: hidden;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+        font-family: var(--font-body), sans-serif;
+        font-size: var(--text-body);
+        line-height: clamp(1.4, 1.6, 1.8);
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      /* Efeitos Especiais de Temas */
+      .glassmorphism {
+        --glass-bg: rgba(255, 255, 255, 0.03);
+      }
+      .glassmorphism .glass {
+        background: var(--glass-bg);
+        backdrop-filter: blur(var(--blur));
+        -webkit-backdrop-filter: blur(var(--blur));
+        border: 1px solid rgba(255, 255, 255, 0.05);
+      }
+
+      .glow-on-hover [data-tv-focus]:hover,
+      .glow-on-hover [data-tv-focus]:focus {
+        box-shadow: 0 0 30px -5px var(--accent-primary);
+      }
+
+      .smooth-scroll {
+        scroll-behavior: smooth;
+      }
+
+      /* Scanlines sutil para temas escuros */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.05) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.01), rgba(0, 255, 0, 0.005), rgba(0, 0, 255, 0.01));
+        background-size: 100% 4px, 3px 100%;
+        pointer-events: none;
+        z-index: 100;
+        opacity: 0.3;
+      }
+      
+      h1, h2, h3 {
+        text-wrap: balance;
+        line-height: 1.15;
+      }
+
+      p {
+        text-wrap: pretty;
+        max-width: 70ch;
+      }
+
+      /* Modo TV Global */
+      .tv-mode {
+        cursor: none !important;
+        scroll-behavior: smooth;
+        overscroll-behavior: none;
+      }
+
+      .tv-mode * {
+        cursor: none !important;
+      }
+
+      /* Customização de Scrollbar para TV */
+      .tv-mode ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      .tv-mode ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+      }
+      .tv-mode ::-webkit-scrollbar-thumb {
+        background: var(--accent-primary);
+        border-radius: 10px;
+      }
+
+      /* Force Landscape em qualquer dispositivo quando em modo vertical */
+      @media (orientation: portrait) {
+        html.player-force-landscape .video-player-container {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vh;
+          height: 100vw;
+          transform: rotate(90deg) translateX(0) translateY(-100%);
+          transform-origin: top left;
+          z-index: 9999;
+          overflow: hidden;
+          background: #000;
+        }
+      }
+
+      .glass {
+        background: rgba(15, 19, 24, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+      }
+
+      .no-scrollbar::-webkit-scrollbar { display: none; }
+      .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+      /* Cast Styles */
+      .cast-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: clamp(6px, 1vw, 10px);
+        border: none;
+        background: transparent;
+        cursor: pointer;
+        border-radius: 50px;
+        transition: all 0.2s ease;
+        position: relative;
+        font-family: var(--font-body), sans-serif;
+        font-weight: 600;
+        color: rgba(255,255,255,0.75);
+      }
+      .cast-btn:hover:not(:disabled) { color: #e8edf2; }
+      .cast-btn:disabled { cursor: not-allowed; opacity: 0.6; }
+      .cast-icon { width: clamp(18px, 2.5vw, 28px); height: clamp(18px, 2.5vw, 28px); flex-shrink: 0; transition: color 0.2s; }
+      .cast-icon--spin { animation: spin 0.8s linear infinite; }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .cast-icon--connected { color: var(--accent-primary); filter: drop-shadow(0 0 6px rgba(0,179,126,0.6)); }
+      .cast-btn--player { padding: clamp(8px, 1.2vw, 14px) clamp(12px, 2vw, 20px); background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 10px; font-size: clamp(0.75rem, 1.2vw, 1rem); }
+      .cast-btn--player:hover:not(:disabled) { background: rgba(0,179,126,0.12); border-color: rgba(0,179,126,0.4); color: var(--accent-primary); }
+      .cast-btn--player.cast-btn--connected { background: rgba(0,179,126,0.15); border-color: var(--accent-primary); color: var(--accent-primary); box-shadow: 0 0 16px rgba(0,179,126,0.2); }
+      .cast-btn--header { padding: clamp(6px, 1vw, 10px) clamp(10px, 1.5vw, 16px); background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; font-size: clamp(0.7rem, 1.1vw, 0.9rem); }
+      .cast-btn--header.cast-btn--connected { background: rgba(0,179,126,0.12); border-color: rgba(0,179,126,0.5); color: var(--accent-primary); }
+      .cast-btn--card { padding: clamp(6px, 0.8vw, 10px); border-radius: 50%; background: rgba(0,0,0,0.45); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.12); }
+      .cast-btn--card:hover:not(:disabled) { background: rgba(0,179,126,0.2); border-color: var(--accent-primary); }
+      .cast-btn--card .cast-icon { width: clamp(14px, 2vw, 22px); height: clamp(14px, 2vw, 22px); }
+      .cast-btn-label { font-size: clamp(0.7rem, 1.1vw, 0.9rem); white-space: nowrap; }
+      .cast-connected-dot { position: absolute; top: -3px; right: -3px; width: 8px; height: 8px; background: var(--accent-primary); border-radius: 50%; border: 2px solid var(--bg-primary); box-shadow: 0 0 6px rgba(0,179,126,0.8); }
+
+      /* Cast Status Bar */
+      .cast-status-bar { width: 100%; overflow: hidden; background: linear-gradient(135deg, rgba(0,156,59,0.15), rgba(0,179,126,0.12)); border-bottom: 1px solid rgba(0,179,126,0.3); backdrop-filter: blur(10px); }
+      .cast-status-inner { display: flex; align-items: center; gap: clamp(8px, 1.5vw, 16px); padding: clamp(6px, 1vw, 10px) clamp(12px, 2vw, 24px); }
+      .cast-status-icon { width: clamp(16px, 2vw, 22px); height: clamp(16px, 2vw, 22px); color: var(--accent-primary); flex-shrink: 0; }
+      .cast-status-text { font-family: var(--font-body), sans-serif; font-size: clamp(0.75rem, 1.1vw, 0.9rem); font-weight: 500; color: var(--accent-primary); flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .cast-status-channel-logo { width: clamp(20px, 3vw, 32px); height: clamp(20px, 3vw, 32px); object-fit: contain; border-radius: 4px; flex-shrink: 0; }
+      .cast-status-stop { display: flex; align-items: center; gap: 4px; padding: 4px 10px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 20px; font-size: clamp(0.65rem, 1vw, 0.8rem); font-weight: 600; color: rgba(255,255,255,0.8); cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: all 0.15s ease; }
+      .cast-status-stop:hover { background: rgba(255,59,59,0.15); border-color: rgba(255,59,59,0.4); color: var(--accent-live); }
+    </style>
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client?deps=react@19.0.0",
+    "zustand": "https://esm.sh/zustand@5.0.1?deps=react@19.0.0",
+    "react-router-dom": "https://esm.sh/react-router-dom@7.1.3?deps=react@19.0.0,react-dom@19.0.0",
+    "lucide-react": "https://esm.sh/lucide-react@0.460.0?deps=react@19.0.0",
+    "hls.js": "https://esm.sh/hls.js@1.5.15",
+    "framer-motion": "https://esm.sh/framer-motion@11.11.17?deps=react@19.0.0,react-dom@19.0.0",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "firebase/": "https://esm.sh/firebase@^12.9.0/"
+  }
+}
+</script>
+    <!-- Google Cast Web Sender SDK -->
+    <script>
+      window['__onGCastApiAvailable'] = function(isAvailable) {
+        if (isAvailable) {
+          window.dispatchEvent(new CustomEvent('castAvailable'));
+        }
+      };
+    </script>
+    <script src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js?loadCastFramework=1" async defer></script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
